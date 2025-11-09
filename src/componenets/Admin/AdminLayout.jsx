@@ -1,57 +1,57 @@
-import React, { useState } from 'react'
-import { FaBars } from 'react-icons/fa';
-import { IoMdClose } from 'react-icons/io';
-import AdminSidebar from './AdminSidebar';
-import { Outlet } from 'react-router-dom';
+import React, { useState } from "react";
+import { FaBars } from "react-icons/fa";
+import { IoMdClose } from "react-icons/io";
+import AdminSidebar from "./AdminSidebar";
+import { Outlet } from "react-router-dom";
 
 const AdminLayout = () => {
-
   //using useState hook
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const toggleSidebar = () =>{
+  const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
-  }
+  };
 
   return (
-    <div className='min-h-screen flex flex-col md:flex-row relative'>
-
+    <div className="min-h-screen flex flex-col md:flex-row relative">
       {/* Mobile Toggle Button */}
-    <div className='flex md:hidden bg-gray-900 text-white z-20'>
-      <button onClick={toggleSidebar}>
-        <FaBars size={24}/>
-      </button>
-        <h1 className='ml-4 text-xl font-medium'>Admin Dashboard</h1>
-    </div>
+      <div className="flex md:hidden bg-gray-900 text-white z-20">
+        <button onClick={toggleSidebar}>
+          <FaBars size={24} />
+        </button>
+        <h1 className="ml-4 text-xl font-medium">Admin Dashboard</h1>
+      </div>
 
-    {/* Overlay for mobile sidebar */}
-    {isSidebarOpen && (
-      <div className='fixed inset-0 z-10  bg-black opacity-50 md:hidden'
-      onClick={toggleSidebar}>
-       </div>
-    )}
-        {/* sidebar */}
-    <div className={`bg-gray-900 w-64 min-h-screen text-white absolute md:relative transform ${isSidebarOpen ? "translate-x-0":"-translate-x-full"} transition-transform duration-300 md:translate-x-0 md:static md:block z-20`}>
-       
-     <div className=' flex justify-between'>
+      {/* Overlay for mobile sidebar */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 z-10  bg-black opacity-50 md:hidden"
+          onClick={toggleSidebar}
+        ></div>
+      )}
+      {/* sidebar */}
+      <div
+        className={`bg-gray-900 w-64 min-h-screen text-white absolute md:relative transform ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } transition-transform duration-300 md:translate-x-0 md:static md:block z-20`}
+      >
+        <div className="flex justify-between">
+          {/* sidebar componenets */}
+          <AdminSidebar />
 
-       {/* sidebar componenets */}
-        <AdminSidebar/>
-
-        <IoMdClose className='lg:hidden m-2 text-2xl text-white'
-        onClick={toggleSidebar}/>
+          <IoMdClose
+            className="lg:hidden m-2 text-2xl text-white"
+            onClick={toggleSidebar}
+          />
         </div>
+      </div>
 
+      {/* Main Content */}
+      <div className="flex-grow p-6 overflow-auto">
+        <Outlet />
+      </div>
     </div>
+  );
+};
 
-    {/* Main Content */}
-    <div className='flex-grow p-6 overflow-auto'>
-      <Outlet/>
-    </div>
-
-
-    </div>
-  )
-}
-
-export default AdminLayout
+export default AdminLayout;

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 
 const OrderManagement = () => {
-
-  const [orders,setOrders] = useState([
+  const [orders, setOrders] = useState([
     {
       _id: 12312321,
       user: {
@@ -13,15 +12,15 @@ const OrderManagement = () => {
     },
   ]);
 
-
   //function
-  const handleStatusChange = (orderId,status) => {
-
-    const updateOrders = orders.map((order)=> order._id === orderId ? {...order, status}: order);
+  const handleStatusChange = (orderId, status) => {
+    const updateOrders = orders.map((order) =>
+      order._id === orderId ? { ...order, status } : order
+    );
 
     setOrders(updateOrders); // updating useState for rendering on screen
-    
-      console.log({ id: orderId, status });
+
+    console.log({ id: orderId, status });
   };
 
   return (
@@ -42,9 +41,7 @@ const OrderManagement = () => {
 
           <tbody>
             {orders.length > 0 ? (
-
               orders.map((order) => (
-
                 <tr
                   key={order._id}
                   className="border-b hover:bg-gray-50 cursor-pointer"
@@ -58,33 +55,35 @@ const OrderManagement = () => {
                   <td className="p-4">${order.totalPrice}</td>
 
                   <td className="p-4">
-
-                  <select
-                    value={order.status}
-                    onChange={(e) =>
-                      handleStatusChange(order._id, e.target.value)
-                    }
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
-                  >
-                    <option value="Processing">Processing</option>
-                    <option value="Shipped">Shipped</option>
-                    <option value="Delivered">Delivered</option>
-                    <option value="Cancelled">Cancelled</option>
-                  </select>
-
+                    <select
+                      value={order.status}
+                      onChange={(e) =>
+                        handleStatusChange(order._id, e.target.value)
+                      }
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
+                    >
+                      <option value="Processing">Processing</option>
+                      <option value="Shipped">Shipped</option>
+                      <option value="Delivered">Delivered</option>
+                      <option value="Cancelled">Cancelled</option>
+                    </select>
                   </td>
 
                   <td className="p-4">
-                    <button onClick={()=> handleStatusChange(order._id, "Delivered")}
-                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Mark as Delivered</button>
+                    <button
+                      onClick={() => handleStatusChange(order._id, "Delivered")}
+                      className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                    >
+                      Mark as Delivered
+                    </button>
                   </td>
-
-
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan={5} className="p-4 text-center text-gray-500">No Orders Found.</td>
+                <td colSpan={5} className="p-4 text-center text-gray-500">
+                  No Orders Found.
+                </td>
               </tr>
             )}
           </tbody>

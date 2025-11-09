@@ -32,24 +32,22 @@ const EditProductPage = () => {
   };
 
   //function for handleImageUpload
-  const handleImageUpload = async(e) =>{
-      const file = e.target.files[0];
-      console.log(file);
-  }
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    console.log(file);
+  };
 
   // function for handleSubmit
-  const handleSubmit  = (e) =>{
-      e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
     console.log(productData);
-    
-  }
+  };
 
   return (
     <div className="max-w-5xl mx-auto p-6 shadow-md rounded-md">
       <h2 className="text-3xl font-bold mb-6">Edit Product</h2>
 
       <form onSubmit={handleSubmit}>
-
         {/* Name */}
         <div className="mb-6 ">
           <label className="font-semibold block mb-2">Product Name</label>
@@ -151,24 +149,30 @@ const EditProductPage = () => {
 
         {/* Image Upload */}
         <div className="mb-6">
-            <label className="block font-semibold mb-2">Upload Image</label>
+          <label className="block font-semibold mb-2">Upload Image</label>
 
-            <input type="file"
-             onChange={handleImageUpload} 
-            className="border bg-gray-200 w-full" />
+          <input
+            type="file"
+            onChange={handleImageUpload}
+            className="border bg-gray-200 w-full"
+          />
 
-            <div className="flex gap-4 mt-4">
-              {productData.images.map((image,index)=>(
-                <div key={index}>
-                      <img src={image.url} alt={image.altText || "Product Image"}
-                      className="w-20 h-20 object-cover rounded-md shadow-md" />
-                </div>
-              ))}
-            </div>
+          <div className="flex gap-4 mt-4">
+            {productData.images.map((image, index) => (
+              <div key={index}>
+                <img
+                  src={image.url}
+                  alt={image.altText || "Product Image"}
+                  className="w-20 h-20 object-cover rounded-md shadow-md"
+                />
+              </div>
+            ))}
+          </div>
         </div>
 
-        <button className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition-colors">Update Product</button>
-
+        <button className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition-colors">
+          Update Product
+        </button>
       </form>
     </div>
   );
