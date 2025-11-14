@@ -1,6 +1,6 @@
 import express from 'express';
 import { admin, protect } from '../middleware/authMiddleware.js';
-import { deleteProduct, fetchProducts, productCreate, updateProduct } from '../controllers/productController.js';
+import {bestSellerProduct, deleteProduct, fetchProducts, newArrivalsProduct, productCreate, similarProductDetails, singleProductFetch, updateProduct } from '../controllers/productController.js';
 
 const productRouter = express.Router();
 
@@ -23,5 +23,27 @@ productRouter.delete("/:id",protect,admin, deleteProduct);
 // @desc Get all products with optional query filters
 // @access Public
 productRouter.get('/',fetchProducts);
+
+// @route GET /api/products/best-seller
+// @desc Retrieve the product with highest rating
+// @access Public
+productRouter.get('/best-seller',bestSellerProduct);
+
+// @route GET /api/products/new-arrivals
+// @desc Retrivers latest 8 products - Creation date
+// @access Public
+productRouter.get('/new-arrivals',newArrivalsProduct);
+
+// @route GET /api/products/:id
+// @desc Get a single product by ID
+// @access public
+productRouter.get('/:id', singleProductFetch);
+
+// @route Get /api/products/similar/:id
+// @desc Retrieve similar products based on the current product's gender and category
+// @access Public
+productRouter.get('/similar/:id',similarProductDetails);
+
+
 
 export default productRouter;

@@ -55,6 +55,7 @@ export const productCreate = async (req, res) => {
     });
 
     const createdProduct = await product.save();
+
     res.status(201).json(createdProduct);
   } catch (error) {
     console.error(error);
@@ -261,5 +262,83 @@ export const fetchProducts = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send("Server Error");
+  }
+};
+// @route GET /api/products/best-seller
+// @desc Retrieve the product with highest rating
+// @access Public
+
+export const bestSellerProduct = async (req, res) => {
+  try {
+    const bestSeller = await Product.findOne().sort({ rating: -1 });
+
+    if (bestSeller) {
+      res.json(bestSeller);
+    } else {
+      res.status(404).json({ message: "No best seller found" });
+    }
+  } catch (error) {
+    console.error(error);
+    console.error(error);
+    res.status(500).send({ message: "Server Error" });
+  }
+};
+
+// @route GET /api/products/new-arrivals
+// @desc Retrivers latest 8 products - Creation date
+// @access Public
+export const newArrivalsProduct = async (req,res) =>{
+  try {
+    // Fetch latest 8 products
+    const newArrivals = await Product.find().sort({createdAt: -1}).limit(8);
+    res.json(newArrivals);
+  } catch (error) {
+     console.error(error);
+    console.error(error);
+    res.status(500).send({ message: "Server Error" });
+  }
+}
+
+// @route GET /api/products/:id
+// @desc Get a single product by ID
+// @access public
+
+export const singleProductFetch = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (product) {
+      res.json(product);
+    } else {
+      res.status(404).json({ message: "Product not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server Error");
+  }
+};
+
+// @route Get /api/products/similar/:id
+// @desc Retrieve similar products based on the current product's gender and category
+// @access Public
+export const similarProductDetails = async (req, res) => {
+  const { id } = req.params; // it is coming from url
+
+  try {
+    const product = await Product.findById(id);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    const similarProducts = await Product.find({
+      _id: { $ne: id }, // Exclude the current product Id
+      gender: product.gender,
+      category: product.category,
+    }).limit(4);
+
+    res.json(similarProducts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Server Error" });
   }
 };

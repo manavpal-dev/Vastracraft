@@ -4,6 +4,7 @@ import "dotenv/config";
 import connectDB from "./config/db.js";
 import userRouter from "./routes/userRoutes.js";
 import productRouter from "./routes/productRoutes.js";
+import cartRouter from "./routes/cartRoutes.js";
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.get("/", (req, res) =>
 // Api Routes
 app.use("/api/users", userRouter);
 app.use("/api/products", productRouter);
+app.use("/api/cart",cartRouter);
 
 // Port
 const PORT = process.env.PORT || 3000;
