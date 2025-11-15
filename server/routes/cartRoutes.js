@@ -1,9 +1,18 @@
 import express from 'express'
-import { protect } from '../middleware/authMiddleware';
+import { protect } from '../middleware/authMiddleware.js';
+import {addProductInCart, updateProduct } from '../controllers/cartController.js';
 
 const cartRouter = express.Router();
 
-cartRouter.post("/",protect);
 
+// @route POST /api/cart
+// @desc Add a product to the cart for a gues or logged in user
+// @access Public
+cartRouter.post("/",addProductInCart);
+
+// @route PUT /api/cart
+// @desc Update product quantity in the cart for a guest or logged-in user
+// @access Public
+cartRouter.put("/",updateProduct);
 
 export default cartRouter;
