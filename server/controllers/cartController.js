@@ -166,3 +166,24 @@ export const deleteProductCart = async (req, res) => {
     return res.status(500).json({ message: "Server Error" });
   }
 };
+
+// @route GET /api/cart
+// @desc Get logged-in user's or guest user's cart
+// @access Public
+
+export const loggedInUserCart = async(req,res) => {
+
+  const {userId,guestId} = req.query;
+
+  try{
+    const cart = await getCart(userId,guestId);
+    if(cart){
+      res.json(cart);
+    }else{
+      res.status(404).json({message: "Cart not found"});
+    }
+  }catch (error){
+    console.error(error);
+    res.status(500).json({message: "Server Error"})
+  }
+} 
