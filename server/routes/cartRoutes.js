@@ -1,6 +1,6 @@
 import express from 'express'
 import { protect } from '../middleware/authMiddleware.js';
-import {addProductInCart, updateProduct } from '../controllers/cartController.js';
+import {addProductInCart, deleteProductCart, updateProduct } from '../controllers/cartController.js';
 
 const cartRouter = express.Router();
 
@@ -14,5 +14,10 @@ cartRouter.post("/",addProductInCart);
 // @desc Update product quantity in the cart for a guest or logged-in user
 // @access Public
 cartRouter.put("/",updateProduct);
+
+// @route DELETE /api/cart
+// @desc Remove a product from the Cart
+// @desc Public
+cartRouter.delete("/",deleteProductCart);
 
 export default cartRouter;
