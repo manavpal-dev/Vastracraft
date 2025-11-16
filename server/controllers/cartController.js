@@ -121,11 +121,11 @@ export const updateProduct = async (req, res) => {
 
       await cart.save();
       return res.status(200).json(cart);
-    }else{
-      return res.status(404).json({message: "Product not found in the cart"});
+    } else {
+      return res.status(404).json({ message: "Product not found in the cart" });
     }
   } catch (error) {
     console.error(error);
-    return res.status(500).json({message: "Server Error"});
+    return res.status(500).json({ message: "Server Error" });
   }
 };
