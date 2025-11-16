@@ -1,6 +1,6 @@
 import express from 'express'
 import { protect } from '../middleware/authMiddleware.js';
-import {addProductInCart, deleteProductCart, loggedInUserCart, updateProduct } from '../controllers/cartController.js';
+import {addProductInCart, deleteProductCart, loggedInUserCart, mergeGuestUserCart, updateProduct } from '../controllers/cartController.js';
 
 const cartRouter = express.Router();
 
@@ -24,5 +24,10 @@ cartRouter.delete("/",deleteProductCart);
 // @desc Get logged-in user's or guest user's cart
 // @access Public
 cartRouter.get("/",loggedInUserCart);
+
+// @route POST /api/cart/merge
+// @desc Merge guest cart into user cart on login
+// @access Private
+cartRouter.post("/merge",protect,mergeGuestUserCart);
 
 export default cartRouter;
