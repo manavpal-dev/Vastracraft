@@ -28,12 +28,14 @@ app.get("/", (req, res) =>
 // Api Routes
 app.use("/api/users", userRouter);
 app.use("/api/products", productRouter);
-app.use("/api/cart",cartRouter);
-app.use("/api/checkout",checkoutRouter);
-app.use("/api/orders",orderRouter);
-app.use("/api/upload",uploadRouter);
-app.use("/api",subscribeRouter);
-app.use("/api",adminRouter);
+app.use("/api/cart", cartRouter);
+app.use("/api/checkout", checkoutRouter);
+app.use("/api/orders", orderRouter);
+app.use("/api/upload", uploadRouter);
+app.use("/api", subscribeRouter);
+
+// Admin
+app.use("/api/admin/users", adminRouter);
 
 // Port
 const PORT = process.env.PORT || 3000;
