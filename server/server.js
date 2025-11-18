@@ -8,6 +8,8 @@ import cartRouter from "./routes/cartRoutes.js";
 import checkoutRouter from "./routes/checkoutRoutes.js";
 import orderRouter from "./routes/orderRoutes.js";
 import uploadRouter from "./routes/uploadRouter.js";
+import subscribeRouter from "./routes/subscribeRoutes.js";
+import adminRouter from "./routes/adminRoutes.js";
 
 const app = express();
 
@@ -29,7 +31,9 @@ app.use("/api/products", productRouter);
 app.use("/api/cart",cartRouter);
 app.use("/api/checkout",checkoutRouter);
 app.use("/api/orders",orderRouter);
-app.use("/api/upload",uploadRouter)
+app.use("/api/upload",uploadRouter);
+app.use("/api",subscribeRouter);
+app.use("/api",adminRouter);
 
 // Port
 const PORT = process.env.PORT || 3000;
