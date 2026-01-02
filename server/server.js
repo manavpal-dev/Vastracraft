@@ -10,6 +10,8 @@ import orderRouter from "./routes/orderRoutes.js";
 import uploadRouter from "./routes/uploadRouter.js";
 import subscribeRouter from "./routes/subscribeRoutes.js";
 import adminRouter from "./routes/adminRoutes.js";
+import productAdminRouter from "./routes/productAdminRoute.js";
+import { adminOrderRouter } from "./routes/adminOrderRoutes.js";
 
 const app = express();
 
@@ -36,6 +38,8 @@ app.use("/api", subscribeRouter);
 
 // Admin
 app.use("/api/admin/users", adminRouter);
+app.use("/api/admin/products",productAdminRouter);
+app.use("/api/admin/orders",adminOrderRouter)
 
 // Port
 const PORT = process.env.PORT || 3000;
@@ -45,3 +49,4 @@ app.listen(PORT, () =>
 );
 
 export default app;
+//11:48

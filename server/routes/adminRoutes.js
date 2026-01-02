@@ -28,4 +28,6 @@ adminRouter.put("/:id",protect,admin,updateUser);
 adminRouter.delete("/:id",protect,admin,deleteUser);
 
 
+
+
 export default adminRouter;

@@ -58,7 +58,7 @@ export const updateCheckout = async (req, res) => {
 
       res.status(200).json(checkout);
     } else {
-      res.status(404).json({ message: "Invalid Payment Status" });
+      res.status(400).json({ message: "Invalid Payment Status" });
     }
   } catch (error) {
     console.error(error);
