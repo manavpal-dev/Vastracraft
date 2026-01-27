@@ -11,8 +11,7 @@ export const adminUser = async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "Server Error" });
   }
-};
-
+}
 // @route POST /api/admin/users
 // @desc Add a new user (admin only)
 // @access Private/Admin
@@ -77,7 +76,7 @@ export const deleteUser = async (req, res) => {
       await user.deleteOne();
       res.json({ message: "User deleted sucessfully" });
     }
-    res.status(404).send("User not found for delete");
+    res.status(404).json({message:"User not found for delete"});
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server Error" });
