@@ -1,17 +1,21 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import login from "../assets/login.webp"
+import { loginUser } from '../redux/slices/authSlics';
+import {useDispatch} from "react-redux";
 
 const Login = () => {
 
   // using useState hook
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
+  const dispatch = useDispatch();
 
   //function handleSubmit
   const handleSubmit = (e) =>{
     e.preventDefault();
-    console.log("User Login",{email,password});
+    // console.log("User Login",{email,password});
+    dispatch(loginUser({email,password}));
   }
 
   return (

@@ -20,8 +20,13 @@ import ProductManagement from './componenets/Admin/ProductManagement';
 import EditProductPage from './componenets/Admin/EditProductPage';
 import OrderManagement from './componenets/Admin/OrderManagement';
 
+import {Provider} from "react-redux";
+import store from "./redux/store"
+
+
 const App = () => {
   return (
+    <Provider store={store}>
 
 <BrowserRouter>
 <Toaster position = "top-right"/>
@@ -55,6 +60,7 @@ const App = () => {
 
 </Routes>
 </BrowserRouter>
+  </Provider>
   );
 }
 
