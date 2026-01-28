@@ -1,19 +1,20 @@
-import {configureStore} from "@reduxjs/toolkit"
-import authReducer from "./slices/authSlics"
-import productReducer  from "./slices/productSlice"
+import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "./slices/authSlics";
+import productReducer from "./slices/productSlice";
+import cartReducer from "./slices/cartSlice";
+import checkoutReducer from "./slices/checkoutSlice"
+import orderReducer from "./slices/orderSlice"
 
 const store = configureStore({
-    reducer: {
-        auth: authReducer,
-        products: productReducer
-     },
+  reducer: {
+    auth: authReducer,
+    products: productReducer,
+    cart: cartReducer,
+    checkout: checkoutReducer,
+    orders:orderReducer
+  },
 });
 
 export default store;
-
-
-
-
-
 
 // Component → Dispatch Action → Reducer → Store updates → UI re-renders
