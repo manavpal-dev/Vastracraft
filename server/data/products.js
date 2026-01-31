@@ -986,5 +986,3 @@ export const products = [
     numReviews: 22,
   },
 ];
-
-

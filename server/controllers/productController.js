@@ -124,9 +124,9 @@ export const updateProduct = async (req, res) => {
 
       product.images = images || product.images;
 
-      product.isFeatured !== undefined ? isFeatured : product.isFeatured;
-
-      product.isPublished !== undefined ? isPublished : product.isPublished;
+      if (isFeatured !== undefined) product.isFeatured = isFeatured;
+      
+      if (isPublished !== undefined) product.isPublished = isPublished;
 
       product.tags = tags || product.tags;
 
@@ -225,7 +225,7 @@ export const fetchProducts = async (req, res) => {
     if (minPrice || maxPrice) {
       query.price = {};
       if (minPrice) query.price.$gte = Number(minPrice);
-      if (maxPrice) query.price.$gte = Number(maxPrice);
+      if (maxPrice) query.price.$lte = Number(maxPrice);
     }
 
     if (search) {
@@ -287,17 +287,17 @@ export const bestSellerProduct = async (req, res) => {
 // @route GET /api/products/new-arrivals
 // @desc Retrivers latest 8 products - Creation date
 // @access Public
-export const newArrivalsProduct = async (req,res) =>{
+export const newArrivalsProduct = async (req, res) => {
   try {
     // Fetch latest 8 products
-    const newArrivals = await Product.find().sort({createdAt: -1}).limit(8);
+    const newArrivals = await Product.find().sort({ createdAt: -1 }).limit(8);
     res.json(newArrivals);
   } catch (error) {
-     console.error(error);
+    console.error(error);
     console.error(error);
     res.status(500).send({ message: "Server Error" });
   }
-}
+};
 
 // @route GET /api/products/:id
 // @desc Get a single product by ID
