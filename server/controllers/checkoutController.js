@@ -50,7 +50,7 @@ export const updateCheckout = async (req, res) => {
     if (paymentStatus === "paid") {
       checkout.isPaid = true;
       checkout.paymentStatus = paymentStatus;
-      checkout.paymetDetails = paymentDetails;
+      checkout.paymentDetails = paymentDetails;
       checkout.paidAt = Date.now();
 
       await checkout.save();
@@ -75,11 +75,18 @@ export const checkoutFinalize = async (req, res) => {
     if (!checkout) {
       return res.status(404).json({ message: "Checkout not found" });
     }
+
+    // 🔥 Prevent duplicate orders
+    const existingOrder = await Order.findOne({ checkout: checkout._id });
+    if (existingOrder) {
+      return res.status(200).json(existingOrder);
+    }
+
     if (checkout.isPaid && !checkout.isFinalized) {
-      // Create final order based on the checkout details
       const finalOrder = await Order.create({
+        checkout: checkout._id, // link checkout
         user: checkout.user,
-        orderItems: checkout.orderItems,
+        orderItems: checkout.checkoutItems, // ✅ FIXED
         shippingAddress: checkout.shippingAddress,
         paymentMethod: checkout.paymentMethod,
         totalPrice: checkout.totalPrice,
@@ -90,18 +97,15 @@ export const checkoutFinalize = async (req, res) => {
         paymentDetails: checkout.paymentDetails,
       });
 
-      // Mark the checkout as finalized
       checkout.isFinalized = true;
       checkout.finalizedAt = Date.now();
       await checkout.save();
 
-      //Delete the cart associated with the user
       await Cart.findOneAndDelete({ user: checkout.user });
+
       res.status(201).json(finalOrder);
-    } else if (checkout.isFinalized) {
-      res.status(400).json({ message: "checkout already finalized" });
     } else {
-      res.status(400).json({ message: "Checkout is not paid" });
+      res.status(400).json({ message: "Checkout not paid or already finalized" });
     }
   } catch (error) {
     console.error(error);

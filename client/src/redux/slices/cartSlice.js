@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import getAuthConfig from "../utils/axiosConfig";
 
 // Helper function to load cart from localStorage
 const loadCartFromStorage = () => {
@@ -117,11 +118,7 @@ export const mergeCart = createAsyncThunk(
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/cart/merge`,
         { guestId, userId },
-        {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-            }
-        }
+        getAuthConfig()
       );
       return response.data;
     } catch (error) {

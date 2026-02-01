@@ -7,14 +7,24 @@ import {
   FaStore,
   FaSignOutAlt,
 } from "react-icons/fa";
+import {useDispatch} from "react-redux";
+import {logout} from "../../redux/slices/authSlics";
+import {clearCart} from "../../redux/slices/cartSlice";
 
 const AdminSidebar = () => {
   // using navigate hook
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
 
   // function
   const handleLogout = () => {
-    navigate("/");
+    dispatch(logout());
+    dispatch(clearCart());
+    // small delay ensures state update
+  setTimeout(() => {
+    navigate("/", { replace: true });
+  }, 0);
   };
 
   return (

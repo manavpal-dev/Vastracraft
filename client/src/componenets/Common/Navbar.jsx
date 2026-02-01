@@ -21,6 +21,7 @@ const Navbar = () => {
   const cartItemCount =
     cart?.products?.reduce((total, product) => total + product.quantity, 0) ||
     0;
+  const { user } = useSelector((state) => state.auth);
 
   //function
   const toggleCartDrawer = () => {
@@ -73,12 +74,14 @@ const Navbar = () => {
 
         {/* Right - Icons */}
         <div className="flex items-center space-x-4">
-          <Link
-            to={`/admin`}
-            className="block bg-black text-white px-2 text-sm"
-          >
-            Admin
-          </Link>
+          {user && user.role === "admin" && (
+            <Link
+              to={`/admin`}
+              className="block bg-black text-white px-2 text-sm"
+            >
+              Admin
+            </Link>
+          )}
           <Link to="/profile" className="hover:text-black ">
             <HiOutlineUser className="h-6 w-6 text-gray-700" />
           </Link>
@@ -90,7 +93,7 @@ const Navbar = () => {
             <HiOutlineShoppingBag className="h-6 w-6 text-gray-700" />
             {cartItemCount > 0 && (
               <span className="absolute -top-1 bg-[#ea2e0e] text-white text-xs rounded-full px-2 py-0.5">
-                {cartItemCount}                
+                {cartItemCount}
               </span>
             )}
           </button>

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import getAuthConfig from "../utils/axiosConfig";
 
 // Async Thunk to Fetch Products by Collection and optional Filters
 export const fetchProductsByFilters = createAsyncThunk(
@@ -57,11 +58,7 @@ export const updateProduct = createAsyncThunk(
     const response = await axios.put(
       `${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`,
       productData,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-        },
-      },
+      getAuthConfig()
     );
     return response.data;
   },

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import getAuthConfig from "../utils/axiosConfig";
 
 // Async Thunk to fetch all admin user
 export const fetchAdminUser = createAsyncThunk(
@@ -7,11 +8,7 @@ export const fetchAdminUser = createAsyncThunk(
   async () => {
     const response = await axios.get(
       `${import.meta.env.VITE_BACKEND_URL}/api/admin/users`,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-        },
-      },
+      getAuthConfig(),
     );
     return response.data;
   },
@@ -25,11 +22,7 @@ export const addUser = createAsyncThunk(
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/admin/users`,
         userData,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-          },
-        },
+        getAuthConfig(),
       );
       return response.data;
     } catch (error) {
@@ -51,11 +44,7 @@ export const updateUser = createAsyncThunk(
           email,
           role,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-          },
-        },
+        getAuthConfig(),
       );
       return response.data;
     } catch (error) {
@@ -69,15 +58,11 @@ export const deleteUser = createAsyncThunk(
   "admin/deleteUser",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axios.delete(
+      await axios.delete(
         `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-          },
-        },
+        getAuthConfig(),
       );
-      return response.data;
+      return id;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -112,7 +97,9 @@ const adminSlice = createSlice({
       //updateUser
       .addCase(updateUser.fulfilled, (state, action) => {
         const updatedUser = action.payload;
-        const userIndex = state.users.findIndex((user) => user._id === updatedUser._id) ;
+        const userIndex = state.users.findIndex(
+          (user) => user._id === updatedUser._id,
+        );
         if (userIndex !== -1) {
           state.users[userIndex] = updatedUser;
         }
@@ -128,8 +115,11 @@ const adminSlice = createSlice({
       })
       .addCase(addUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.users.push(action.payload.user);
+
+        const newUser = action.payload.user || action.payload;
+        state.users.push(newUser);
       })
+
       .addCase(addUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload.message;
