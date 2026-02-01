@@ -43,9 +43,9 @@ export const updateProduct = createAsyncThunk(
 // async thunk to update an existing product
 export const deleteProduct = createAsyncThunk(
   "adminProducts/deleteProduct",
-  async ({ id }) => {
+  async (id) => {
     await axios.delete(
-      `${import.meta.env.VITE_BACKEND_URL}/api/admin/products/${id}`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`,
       getAuthConfig()
     );
     return id;

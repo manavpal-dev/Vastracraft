@@ -19,25 +19,30 @@ export const adminOrder = async (req, res) => {
 // @access Private/Admin
 export const updateAdminOrder = async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id);
-    // console.log("checking orders details in admin : ", order);
-    if (order) {
-      order.status = req.body.status || order.status;
-      order.isDelivered =
-        req.body.status === "Delivered" ? true : order.isDelivered;
-      order.deliveredAt =
-        req.body.status === "Delivered" ? Date.now() : order.deliveredAt;
+    const allowedStatus = ["Processing", "Shipped", "Delivered", "Cancelled"];
 
-      const updateOrder = await order.save();
-      res.json(updateOrder);
-    } else {
-      res.status(404).json({ message: "Product not Found" });
+    if (!allowedStatus.includes(req.body.status)) {
+      return res.status(400).json({ message: "Invalid order status" });
     }
+
+    const order = await Order.findById(req.params.id).populate("user", "name");
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    order.status = req.body.status;
+    order.isDelivered = req.body.status === "Delivered";
+    order.deliveredAt = req.body.status === "Delivered" ? Date.now() : null;
+
+    const updatedOrder = await order.save();
+    res.json(updatedOrder);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server Error" });
   }
 };
+
 // @route DELETE /api/admin/orders/:id
 // @desc Delete an order
 // @access Private/Admin
@@ -47,7 +52,7 @@ export const deleteOrder = async (req, res) => {
 
     if (order) {
       await order.deleteOne();
-      res.json({ message: "Order removed Sucessfully" });
+      return res.json({ message: "Order removed successfully" });
     }
     res.status(404).json({ message: "Order not found" });
   } catch (error) {

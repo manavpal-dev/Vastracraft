@@ -1,31 +1,29 @@
 import React, { useEffect, useState } from "react";
-import {useDispatch, useSelector} from "react-redux"
-import {useNavigate} from "react-router-dom"
-import {addUser, deleteUser, updateUser} from "../../redux/slices/adminSlice"
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { addUser, deleteUser, updateUser } from "../../redux/slices/adminSlice";
 import { fetchAdminUser } from "../../redux/slices/adminSlice";
-
 
 const UserManagement = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const {user} = useSelector((state) => state.auth);
-  const {users, loading, error} = useSelector((state) => state.admin);
+  const { user } = useSelector((state) => state.auth);
+  const { users, loading, error } = useSelector((state) => state.admin);
 
-useEffect(() => {
-  if (!user) {
-    navigate("/login");
-  } else if (user.role !== "admin") {
-    navigate("/");
-  }
-}, [user, navigate]);
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    } else if (user.role !== "admin") {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
-useEffect(() => {
-  if (user?.role === "admin") {
-    dispatch(fetchAdminUser());
-  }
-}, [dispatch, user]);
-
+  useEffect(() => {
+    if (user?.role === "admin") {
+      dispatch(fetchAdminUser());
+    }
+  }, [dispatch, user]);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -44,23 +42,22 @@ useEffect(() => {
 
   // function for reset from
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  const res = await dispatch(addUser(formData));
+    e.preventDefault();
+    const res = await dispatch(addUser(formData));
 
-  if (!res.error) {
-    setFormData({
-      name: "",
-      email: "",
-      password: "",
-      role: "customer",
-    });
-  }
-};
-
+    if (!res.error) {
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        role: "customer",
+      });
+    }
+  };
 
   // function
   const handleRoleChange = (userId, newRole) => {
-    dispatch(updateUser({id:userId, role:newRole}));
+    dispatch(updateUser({ id: userId, role: newRole }));
   };
 
   //function
@@ -75,7 +72,7 @@ useEffect(() => {
       <h2 className="text-2xl font-bold mb-4">User Management</h2>
 
       {loading && <p>Loading ...</p>}
-      {error && <p>Error: {error}</p> }
+      {error && <p>Error: {error}</p>}
 
       {/* Add New User Form */}
       <div className="p-6 rounded-lg mb-6">

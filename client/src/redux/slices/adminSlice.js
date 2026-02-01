@@ -95,8 +95,12 @@ const adminSlice = createSlice({
       })
 
       //updateUser
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(updateUser.fulfilled, (state, action) => {
-        const updatedUser = action.payload;
+        state.loading = false;
+        const updatedUser = action.payload.user;
         const userIndex = state.users.findIndex(
           (user) => user._id === updatedUser._id,
         );
@@ -104,10 +108,19 @@ const adminSlice = createSlice({
           state.users[userIndex] = updatedUser;
         }
       })
+
       // deleteUser
+      .addCase(deleteUser.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(deleteUser.fulfilled, (state, action) => {
+        state.loading = false;
         state.users = state.users.filter((user) => user._id !== action.payload);
       })
+      .addCase(deleteUser.rejected, (state) => {
+        state.loading = false;
+      })
+
       //addUser
       .addCase(addUser.pending, (state) => {
         state.loading = true;
@@ -122,7 +135,7 @@ const adminSlice = createSlice({
 
       .addCase(addUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload.message;
+        state.error = action.payload?.message || action.error.message;
       });
   },
 });

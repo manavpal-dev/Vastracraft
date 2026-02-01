@@ -20,16 +20,15 @@ export const addNewUser = async (req, res) => {
   const { name, email, password, role } = req.body;
 
   try {
-    const userExists = await User.findOne({ email });
+    const userExists = await User.findOne({ email: email.toLowerCase() });
 
     if (userExists) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // Create a new user
     const user = await User.create({
       name,
-      email,
+      email: email.toLowerCase(),
       password,
       role: role || "customer",
     });
@@ -38,11 +37,18 @@ export const addNewUser = async (req, res) => {
       message: "New user successfully created",
       user,
     });
+
   } catch (error) {
     console.error(error);
-    res.status(500).send({ message: "Server Error" });
+
+    if (error.name === "ValidationError") {
+      return res.status(400).json({ message: error.message });
+    }
+
+    res.status(500).json({ message: "Server Error" });
   }
 };
+
 
 // @route PUT /api/admin/users/:id
 // @desc Update user info (admin only) -- Name, email and role
